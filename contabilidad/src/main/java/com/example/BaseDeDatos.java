@@ -18,10 +18,8 @@ public class BaseDeDatos {
     String dbName = ""; // Poner la base de datos que toca
 
     public BaseDeDatos(String usuario, String contrasenya) {
-        String url = "jdbc:postgresql://" +
-                host + ":" + port + "/" + dbName +
-                "?user=" + usuario +
-                "&password=" + contrasenya;
+        String url = "jdbc:postgresql://" + host + ":" + port + "/contabilidad";
+
         try {
             conexion = DriverManager.getConnection(url, usuario, contrasenya);
             System.out.println("Conexión exitosa!");

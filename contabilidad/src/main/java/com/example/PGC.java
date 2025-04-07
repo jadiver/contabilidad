@@ -6,17 +6,20 @@ import java.util.Map;
 
 public class PGC {
     private List<Cuenta> cuentas = new ArrayList<>();
+    private BaseDeDatos bd;
+
+    public PGC(BaseDeDatos bd) {
+        this.bd = bd;
+    }
 
     public void listar(String grupo) {
-        String SQL = "SELECT codigo, nombre FROM public.pgc"; // Aunque podria ser SELECT * FROM pgc
+        String SQL = "SELECT codigo, nombre FROM public.pgc";
 
         if (grupo != null && !grupo.trim().isEmpty()) {
             SQL += " WHERE codigo LIKE '" + grupo + "%'";
         }
 
-        List<Map<String, Object>> resultados = new ArrayList<>();
-
-        resultados = new BaseDeDatos("", "").consultar(SQL); // usa la conexión estática
+        List<Map<String, Object>> resultados = bd.consultar(SQL); // <- ahora usamos la instancia bd
 
         cuentas.clear();
         for (Map<String, Object> fila : resultados) {
@@ -29,5 +32,10 @@ public class PGC {
         for (Cuenta c : cuentas) {
             System.out.println(c);
         }
+    }
+
+    public void cargar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cargar'");
     }
 }

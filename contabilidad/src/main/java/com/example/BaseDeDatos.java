@@ -2,6 +2,7 @@ package com.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -135,4 +136,35 @@ public class BaseDeDatos {
             System.err.println("Error al cerrar conexión: " + e.getMessage());
         }
     }
+
+    public static boolean conecta() {
+        if (conexion != null) return true;
+        try {
+            String url = "jdbc:postgresql://127.0.0.1:5432/contabilidad";
+            conexion = DriverManager.getConnection(url, "postgres", "lolirosa123"); // pon tus datos
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error de conexión: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean estaConectado() {
+        return conexion != null;
+    }
+
+    public static int insertar(String sql, List<Object> parametros) {
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
+            }
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error al insertar: " + e.getMessage());
+            return -1;
+        }
+    }
+    
+    
+
 }
